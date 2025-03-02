@@ -247,13 +247,17 @@ extension OCKHealthKitPassthroughStore {
             .quantity
             .doubleValue(for: event.task.healthKitLinkage.unit)
 
-        var outcomeValue = OCKOutcomeValue(
+        let outcomeValue = OCKOutcomeValue(
             doubleValue,
-            units: event.task.healthKitLinkage.unit.unitString
+            units: event.task.healthKitLinkage.unit.unitString,
+            createdDate: Date(),
+            kind: nil,
+            sourceRevision: sample.sourceRevision,
+            device: sample.device,
+            metadata: sample.metadata,
+            startDate: sample.dateInterval.start,
+            endDate: sample.dateInterval.end
         )
-        
-        outcomeValue.startDate = sample.dateInterval.start
-        outcomeValue.endDate = sample.dateInterval.end
 
         var updatedEvent = event
 

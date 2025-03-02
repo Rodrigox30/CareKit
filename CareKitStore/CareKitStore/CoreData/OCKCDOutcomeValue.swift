@@ -38,6 +38,9 @@ class OCKCDOutcomeValue: NSManagedObject {
     @NSManaged var startDate: Date?
     @NSManaged var endDate: Date?
     @NSManaged var outcome: OCKCDOutcome?
+    @NSManaged var sourceRevision: OCKCDSourceRevision?
+    @NSManaged var device: OCKCDDevice?
+    @NSManaged var metadata: [String: String]?
 
     @NSManaged private var typeString: String
     var type: OCKOutcomeValueType {
@@ -58,8 +61,21 @@ class OCKCDOutcomeValue: NSManagedObject {
         self.units = value.units
         self.kind = value.kind
         self.createdDate = value.createdDate
-        self.startDate = value.startDate
-        self.endDate = value.endDate
+        self.startDate = value.dateInterval?.start
+        self.endDate = value.dateInterval?.end
+        self.metadata = value.metadata
+        if let sourceRevision = value.sourceRevision {
+            self.sourceRevision = OCKCDSourceRevision(
+                sourceRevision: sourceRevision,
+                context: context
+            )
+        }
+        if let device = value.device {
+            self.device = OCKCDDevice(
+                device: device,
+                context: context
+            )
+        }
     }
 
     func makeValue() -> OCKOutcomeValue {
@@ -67,11 +83,17 @@ class OCKCDOutcomeValue: NSManagedObject {
         var value: OCKOutcomeValue!
         
         self.managedObjectContext!.performAndWait {
-            value = OCKOutcomeValue(self.value, units: units)
-            value.createdDate = createdDate
-            value.startDate = startDate
-            value.endDate = endDate
-            value.kind = kind
+            value = OCKOutcomeValue(
+                self.value,
+                units: units,
+                createdDate: createdDate,
+                kind: kind,
+                sourceRevision: sourceRevision?.makeValue(),
+                device: device?.makeValue(),
+                metadata: metadata,
+                startDate: startDate,
+                endDate: endDate
+            )
         }
 
         return value
