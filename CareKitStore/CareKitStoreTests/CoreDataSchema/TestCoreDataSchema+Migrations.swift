@@ -165,7 +165,7 @@ class TestCoreDataSchemaMigrations: XCTestCase {
         #endif
         descriptor.shouldMigrateStoreAutomatically = true
 
-        let container = NSPersistentContainer(name: "sut", managedObjectModel: sharedManagedObjectModel)
+		let container = NSPersistentContainer(name: "sut", managedObjectModel: OCKStore.sharedManagedObjectModel)
         container.persistentStoreDescriptions = [descriptor]
 
         // 3. Perform migration and ensure it was successful.
