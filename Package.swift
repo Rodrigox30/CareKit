@@ -79,7 +79,8 @@ let package = Package(
             exclude: ["Info.plist"],
             resources: [
                 .process("CoreData/Migrations/2_0To2_1/2.0_2.1_Mapping.xcmappingmodel"),
-                .process("CoreData/Migrations/2_1To3_0/2.1_3.0_Mapping.xcmappingmodel")
+                .process("CoreData/Migrations/2_0To3_0/2.0_3.0_Mapping.xcmappingmodel"),
+				.process("CoreData/Migrations/2_1To3_0/2.1_3.0_Mapping.xcmappingmodel")
             ],
             swiftSettings: sharedSwiftSettings,
         ),
