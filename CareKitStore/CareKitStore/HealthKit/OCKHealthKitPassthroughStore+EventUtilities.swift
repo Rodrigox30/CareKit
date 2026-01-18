@@ -334,7 +334,7 @@ extension OCKHealthKitPassthroughStore {
 
 			let value = -1
             let units = event.task.healthKitLinkage.unit.unitString
-            var outcomeValue = OCKOutcomeValue(-1, units: units)
+            var outcomeValue = OCKOutcomeValue(value, units: units)
 			outcomeValue.createdDate = addedSample.dateInterval.start
 			outcomeValue.endDate = addedSample.dateInterval.end
 
@@ -346,8 +346,6 @@ extension OCKHealthKitPassthroughStore {
 
         // Invalidate the first outcome value
         updatedEvent.outcome?.values[0].value = -1
-		updatedEvent.outcome?.values[0].createdDate = addedSample.dateInterval.start
-		updatedEvent.outcome?.values[0].endDate = addedSample.dateInterval.end
 
         // Track the new sample ID
         updatedEvent.outcome?.healthKitUUIDs[0].append(addedSampleID)
@@ -517,6 +515,8 @@ extension OCKHealthKitPassthroughStore {
         var outcomeValue = event.outcome?.values.first ?? OCKOutcomeValue(newSum, units: units)
 		outcomeValue.value = newSum
 		outcomeValue.units = units
+		outcomeValue.createdDate = event.scheduleEvent.start
+		outcomeValue.endDate = event.scheduleEvent.end
 
         updatedEvent.outcome!.values = [outcomeValue]
 
